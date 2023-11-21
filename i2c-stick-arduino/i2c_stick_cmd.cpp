@@ -289,7 +289,7 @@ handle_cmd(uint8_t channel_mask, const char *cmd)
     send_answer_chunk(channel_mask, "mlx:MELEXIS I2C STICK", 1);
     send_answer_chunk(channel_mask, "mlx:=================", 1);
     send_answer_chunk(channel_mask, "mlx:", 1);
-    send_answer_chunk(channel_mask, "mlx:Melexis Inspired Engineering", 1);
+    send_answer_chunk(channel_mask, "mlx:Melexis Innovation with Heart", 1);
     send_answer_chunk(channel_mask, "mlx:", 1);
     send_answer_chunk(channel_mask, "mlx:hit '?' for help", 1);
     return NULL;

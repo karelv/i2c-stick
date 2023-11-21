@@ -1406,10 +1406,16 @@ function checkbox_slave_enable(chkbox)
   }
 }
 
+$(".btn_sent").click(function(){
+  let current_entry = $(this).val();
+  sent_command(current_entry + '\n');
+  $(this).val("");
+});
+
 $("#serial_send").on('keyup', function (val, key) {
   const single_char_cmd_list = [';', '!', '>', '<', '?', '1', '5'];
   // check if current value is a single character command
-  current_entry = $(this).val();
+  let current_entry = $(this).val();
   if (current_entry.length == 1)
   {
     if (single_char_cmd_list.includes(current_entry))
