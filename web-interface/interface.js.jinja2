@@ -1,3 +1,5 @@
+import { serial as webSerialPolyfill } from "https://cdn.jsdelivr.net/npm/web-serial-polyfill@1.0.15";
+
 const mlx_steel_grey = "#b2c4cb";
 const mlx_electric_green = "#65BBA9";
 const mlx_gold_yellow = "#EEA320";
@@ -5,13 +7,20 @@ const mlx_coral_red = "#DB4140";
 const mlx_royal_blue = "#00354B";
 const mlx_charcoal_grey = "#3e4242";
 
-import { serial as webSerialPolyfill } from "https://cdn.jsdelivr.net/npm/web-serial-polyfill@1.0.15";
-var serial_module = webSerialPolyfill;
-//var serial_module = navigator.serial;
+var serial_module = null;
+if ('serial' in navigator)
+{
+  serial_module = navigator.serial;
+} else
+{
+  if ('usb' in navigator)
+  {
+    serial_module = webSerialPolyfill;
+  }
+}
 
 const color_palette = [mlx_electric_green, mlx_coral_red, mlx_gold_yellow, mlx_royal_blue, mlx_steel_grey, "#e60049", "#0bb4ff", "#50e991", "#e6d800", "#9b19f5", "#ffa300", "#dc0ab4", "#b3d4ff", "#00bfa0"];
 
-var has_serial = false;
 var serial = null;
 var g_heat_map = 0;
 
@@ -304,25 +313,24 @@ $(document).ready(function () {
     sent_command("+ch:I2C_FREQ="+this.value+"\n");
   });
 
-//  if (!("serial" in navigator)) {
-//    // The Web Serial API is NOT supported.
-//    $('button').not('.keep').prop('disabled', true); // disable all buttons!
-//    $("#serial_terminal").append('<pre>==> This page uses "Web Serial API".</pre><br>');
-//    $("#serial_terminal").append('<pre>https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API</pre><br>');
-//    $("#serial_terminal").append('<pre> </pre><br>');
-//    $("#serial_terminal").append('<pre>Your browser/OS does NOT support the serial port!</pre><br>');
-//    $("#serial_terminal").append('<pre>Please use browser:</pre><br>');
-//    $("#serial_terminal").append('<pre> - Chrome</pre><br>');
-//    $("#serial_terminal").append('<pre> - Edge</pre><br>');
-//    $("#serial_terminal").append('<pre> - Opera</pre><br>');
-//    $("#serial_terminal").append('<pre>with an operating system:</pre><br>');
-//    $("#serial_terminal").append('<pre> - Linux</pre><br>');
-//    $("#serial_terminal").append('<pre> - ChromeOS</pre><br>');
-//    $("#serial_terminal").append('<pre> - macOS</pre><br>');
-//    $("#serial_terminal").append('<pre> - Windows 10+</pre><br>');
-//    return;
-//  }
-  has_serial = true;
+  if (serial_module === null) {
+    // The Web Serial API is NOT supported.
+    $('button').not('.keep').prop('disabled', true); // disable all buttons!
+    $("#serial_terminal").append('<pre>==> This page uses "Web Serial API".</pre><br>');
+    $("#serial_terminal").append('<pre>https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API</pre><br>');
+    $("#serial_terminal").append('<pre> </pre><br>');
+    $("#serial_terminal").append('<pre>Your browser/OS does NOT support the serial port!</pre><br>');
+    $("#serial_terminal").append('<pre>Please use browser:</pre><br>');
+    $("#serial_terminal").append('<pre> - Chrome</pre><br>');
+    $("#serial_terminal").append('<pre> - Edge</pre><br>');
+    $("#serial_terminal").append('<pre> - Opera</pre><br>');
+    $("#serial_terminal").append('<pre>with an operating system:</pre><br>');
+    $("#serial_terminal").append('<pre> - Linux</pre><br>');
+    $("#serial_terminal").append('<pre> - ChromeOS</pre><br>');
+    $("#serial_terminal").append('<pre> - macOS</pre><br>');
+    $("#serial_terminal").append('<pre> - Windows 10+</pre><br>');
+    return;
+  }
   $("#lbl_selected_port").text(selected_port.usbVendorId + '/' + selected_port.usbProductId);
 
   let div = document.querySelector('#receive_data');
@@ -1321,12 +1329,11 @@ $("#btn_open_port").click(async () => {
     await close_port();
   }
 
-//  if (!('serial' in navigator))
-//  {
-//    pop_error($("#serial_terminal").html());
-//    return;
-//  }
-
+  if (serial_module === null)
+  {
+    pop_error($("#serial_terminal").html());
+    return;
+  }
 
   const ports = await serial_module.getPorts();
   for (let i = 0; i< ports.length; i++)
