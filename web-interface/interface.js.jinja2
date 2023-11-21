@@ -1258,7 +1258,7 @@ async function serial_open_and_start_reading()
           break;
         }
         const recieve_event = new CustomEvent('receive', { detail: value });
-        div = document.querySelector('#receive_data');
+        let div = document.querySelector('#receive_data');
         div.dispatchEvent(recieve_event);
       }
     } catch (error) {
