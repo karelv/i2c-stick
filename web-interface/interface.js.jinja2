@@ -1320,11 +1320,11 @@ $("#btn_open_port").click(async () => {
     await close_port();
   }
 
-  if (!('serial' in navigator))
-  {
-    pop_error($("#serial_terminal").html());
-    return;
-  }
+//  if (!('serial' in navigator))
+//  {
+//    pop_error($("#serial_terminal").html());
+//    return;
+//  }
 
 
   const ports = await serial_module.getPorts();
