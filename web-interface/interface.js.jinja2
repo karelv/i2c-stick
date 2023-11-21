@@ -6,7 +6,6 @@ const mlx_royal_blue = "#00354B";
 const mlx_charcoal_grey = "#3e4242";
 
 import { serial as webSerialPolyfill } from "https://cdn.jsdelivr.net/npm/web-serial-polyfill@1.0.15";
-
 var serial_module = webSerialPolyfill;
 //var serial_module = navigator.serial;
 
@@ -328,9 +327,35 @@ $(document).ready(function () {
 
   let div = document.querySelector('#receive_data');
 
-  // show receiving data in terminal...
+  // listener to generate receive_line events.
   div.addEventListener('receive', (e) => {
-    var value_str = dec.decode(e.detail).replaceAll('\r', '');
+    var value_str = dec.decode(e.detail);
+    value_str = value_str.replaceAll('\r', '');
+
+    let lines = value_str.split("\n");
+
+    let complete_lines = lines.slice(0, -1);
+    if (complete_lines.length > 0)
+    {
+      complete_lines[0] = receive_buffer + complete_lines[0];
+      receive_buffer = "";
+    }
+
+    for (let i=0; i<complete_lines.length; i++)
+    {
+      const receive_line_event = new CustomEvent('receive_line', { detail: complete_lines[i] });
+      let receive_div = document.querySelector('#receive_data');
+      receive_div.dispatchEvent(receive_line_event);
+    }
+
+    receive_buffer += lines.slice(-1);
+
+  }, false);
+
+  // show receiving data in terminal...
+  div.addEventListener('receive_line', (e) => {
+//    var value_str = dec.decode(e.detail).replaceAll('\r', '');
+    var value_str = e.detail;
     let dt = get_date_time();
     if (!($("#chk_add_datetime").is(":checked")))
     {
@@ -351,6 +376,7 @@ $(document).ready(function () {
       has_line_ending = true;
       values.pop();
     }
+    has_line_ending = true;
 
     let term = $("#serial_terminal");
 
@@ -384,30 +410,6 @@ $(document).ready(function () {
     }
   }, false);
 
-  // listener to generate receive_line events.
-  div.addEventListener('receive', (e) => {
-    var value_str = dec.decode(e.detail);
-    value_str = value_str.replaceAll('\r', '');
-
-    let lines = value_str.split("\n");
-
-    let complete_lines = lines.slice(0, -1);
-    if (complete_lines.length > 0)
-    {
-      complete_lines[0] = receive_buffer + complete_lines[0];
-      receive_buffer = "";
-    }
-
-    for (let i=0; i<complete_lines.length; i++)
-    {
-      const receive_line_event = new CustomEvent('receive_line', { detail: complete_lines[i] });
-      let receive_div = document.querySelector('#receive_data');
-      receive_div.dispatchEvent(receive_line_event);
-    }
-
-    receive_buffer += lines.slice(-1);
-
-  }, false);
 
   // listener to enable buttons
   div.addEventListener('receive_line', (e) => {
