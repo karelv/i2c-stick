@@ -500,11 +500,11 @@ $(document).ready(function () {
               let u = connected_slaves[sa].cs.MV_UNIT[i];
               // let r = connected_slaves[sa].cs.MV_RES[i];
               let trace_i = transient_chart.data.datasets.length;
-              dataset = {label: d + "@" + sa + ": " + h + " [" + u + "]",
-                         data: [],
-                         backgroundColor: hex_to_rgba(color_palette[trace_i%color_palette.length], 0.2),
-                         borderColor: hex_to_rgba(color_palette[trace_i%color_palette.length], 1),
-                         borderWidth: 1,
+              let dataset = {label: d + "@" + sa + ": " + h + " [" + u + "]",
+                             data: [],
+                             backgroundColor: hex_to_rgba(color_palette[trace_i%color_palette.length], 0.2),
+                             borderColor: hex_to_rgba(color_palette[trace_i%color_palette.length], 1),
+                             borderWidth: 1,
                 };
               connected_slaves[sa]['transient_chart']['trace_i'].push(trace_i);
               transient_chart.data.datasets.push(dataset);
