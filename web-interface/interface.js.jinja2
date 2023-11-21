@@ -5,6 +5,10 @@ const mlx_coral_red = "#DB4140";
 const mlx_royal_blue = "#00354B";
 const mlx_charcoal_grey = "#3e4242";
 
+import { serial as webSerialPolyfill } from "https://cdn.jsdelivr.net/npm/web-serial-polyfill@1.0.15";
+
+var serial_module = webSerialPolyfill;
+//  serial_module = navigator.serial;
 
 const color_palette = [mlx_electric_green, mlx_coral_red, mlx_gold_yellow, mlx_royal_blue, mlx_steel_grey, "#e60049", "#0bb4ff", "#50e991", "#e6d800", "#9b19f5", "#ffa300", "#dc0ab4", "#b3d4ff", "#00bfa0"];
 
@@ -280,7 +284,7 @@ function get_pixel_value(img_dat, x,y, result = []){
 function sent_command(command)
 {
   const sent_event = new CustomEvent('sent', { detail: command });
-  div = document.querySelector('#sent_data');
+  let div = document.querySelector('#sent_data');
   div.dispatchEvent(sent_event);
 }
 
@@ -301,28 +305,30 @@ $(document).ready(function () {
     sent_command("+ch:I2C_FREQ="+this.value+"\n");
   });
 
-  if (!("serial" in navigator)) {
-    // The Web Serial API is NOT supported.
-    $('button').not('.keep').prop('disabled', true); // disable all buttons!
-    $("#serial_terminal").append('<pre>==> This page uses "Web Serial API".</pre><br>');
-    $("#serial_terminal").append('<pre>https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API</pre><br>');
-    $("#serial_terminal").append('<pre> </pre><br>');
-    $("#serial_terminal").append('<pre>Your browser/OS does NOT support the serial port!</pre><br>');
-    $("#serial_terminal").append('<pre>Please use browser:</pre><br>');
-    $("#serial_terminal").append('<pre> - Chrome</pre><br>');
-    $("#serial_terminal").append('<pre> - Edge</pre><br>');
-    $("#serial_terminal").append('<pre> - Opera</pre><br>');
-    $("#serial_terminal").append('<pre>with an operating system:</pre><br>');
-    $("#serial_terminal").append('<pre> - Linux</pre><br>');
-    $("#serial_terminal").append('<pre> - ChromeOS</pre><br>');
-    $("#serial_terminal").append('<pre> - macOS</pre><br>');
-    $("#serial_terminal").append('<pre> - Windows 10+</pre><br>');
-    return;
-  }
+//  if (!("serial" in navigator)) {
+//    // The Web Serial API is NOT supported.
+//    $('button').not('.keep').prop('disabled', true); // disable all buttons!
+//    $("#serial_terminal").append('<pre>==> This page uses "Web Serial API".</pre><br>');
+//    $("#serial_terminal").append('<pre>https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API</pre><br>');
+//    $("#serial_terminal").append('<pre> </pre><br>');
+//    $("#serial_terminal").append('<pre>Your browser/OS does NOT support the serial port!</pre><br>');
+//    $("#serial_terminal").append('<pre>Please use browser:</pre><br>');
+//    $("#serial_terminal").append('<pre> - Chrome</pre><br>');
+//    $("#serial_terminal").append('<pre> - Edge</pre><br>');
+//    $("#serial_terminal").append('<pre> - Opera</pre><br>');
+//    $("#serial_terminal").append('<pre>with an operating system:</pre><br>');
+//    $("#serial_terminal").append('<pre> - Linux</pre><br>');
+//    $("#serial_terminal").append('<pre> - ChromeOS</pre><br>');
+//    $("#serial_terminal").append('<pre> - macOS</pre><br>');
+//    $("#serial_terminal").append('<pre> - Windows 10+</pre><br>');
+//    return;
+//  }
   has_serial = true;
+  serial_module = webSerialPolyfill;
+//  serial_module = navigator.serial;
   $("#lbl_selected_port").text(selected_port.usbVendorId + '/' + selected_port.usbProductId);
 
-  div = document.querySelector('#receive_data');
+  let div = document.querySelector('#receive_data');
 
   // show receiving data in terminal...
   div.addEventListener('receive', (e) => {
@@ -1084,7 +1090,7 @@ $(document).ready(function () {
     }
     let value_byte = enc.encode(value_str);
 
-    dt = get_date_time();
+    let dt = get_date_time();
     if (!($("#chk_add_datetime").is(":checked")))
     {
       dt = '';
@@ -1167,7 +1173,7 @@ async function serial_open_and_start_reading()
   {
     await serial.open({ baudRate: 1000000 });
 
-    dt = get_date_time();
+    let dt = get_date_time();
     if (!($("#chk_add_datetime").is(":checked")))
     {
       dt = '';
@@ -1193,7 +1199,7 @@ async function serial_open_and_start_reading()
     $("div#main button.button").prop('disabled', true); // disable input entry!
     $("#btn_open_port").removeClass("is-light");
 
-    dt = get_date_time();
+    let dt = get_date_time();
     if (!($("#chk_add_datetime").is(":checked")))
     {
       dt = '';
@@ -1261,7 +1267,7 @@ async function serial_open_and_start_reading()
       $("div#main button.button").prop('disabled', true); // disable input entry!
       $("#btn_open_port").removeClass("is-light");
 
-      dt = get_date_time();
+      let dt = get_date_time();
       if (!($("#chk_add_datetime").is(":checked")))
       {
         dt = '';
@@ -1297,7 +1303,7 @@ $("#lbl_selected_port").click(async () => {
   {
     await close_port();
   }
-  serial = await navigator.serial.requestPort();
+  serial = await serial_module.requestPort();
   if (serial != null)
   {
     selected_port = serial.getInfo();
@@ -1321,7 +1327,7 @@ $("#btn_open_port").click(async () => {
   }
 
 
-  const ports = await navigator.serial.getPorts();
+  const ports = await serial_module.getPorts();
   for (let i = 0; i< ports.length; i++)
   {
     let port = ports[i];
@@ -1336,7 +1342,7 @@ $("#btn_open_port").click(async () => {
 
   if (serial == null)
   {
-    serial = await navigator.serial.requestPort({ filters: accepted_ports });
+    serial = await serial_module.requestPort({ filters: accepted_ports });
     if (serial != null)
     {
       selected_port = serial.getInfo();
