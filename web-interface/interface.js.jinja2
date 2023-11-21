@@ -8,7 +8,7 @@ const mlx_charcoal_grey = "#3e4242";
 import { serial as webSerialPolyfill } from "https://cdn.jsdelivr.net/npm/web-serial-polyfill@1.0.15";
 
 var serial_module = webSerialPolyfill;
-//  serial_module = navigator.serial;
+//var serial_module = navigator.serial;
 
 const color_palette = [mlx_electric_green, mlx_coral_red, mlx_gold_yellow, mlx_royal_blue, mlx_steel_grey, "#e60049", "#0bb4ff", "#50e991", "#e6d800", "#9b19f5", "#ffa300", "#dc0ab4", "#b3d4ff", "#00bfa0"];
 
@@ -324,8 +324,6 @@ $(document).ready(function () {
 //    return;
 //  }
   has_serial = true;
-  serial_module = webSerialPolyfill;
-//  serial_module = navigator.serial;
   $("#lbl_selected_port").text(selected_port.usbVendorId + '/' + selected_port.usbProductId);
 
   let div = document.querySelector('#receive_data');
@@ -386,7 +384,7 @@ $(document).ready(function () {
     }
   }, false);
 
-  // listener to generate recieve_line events.
+  // listener to generate receive_line events.
   div.addEventListener('receive', (e) => {
     var value_str = dec.decode(e.detail);
     value_str = value_str.replaceAll('\r', '');
@@ -402,8 +400,9 @@ $(document).ready(function () {
 
     for (let i=0; i<complete_lines.length; i++)
     {
-      const recieve_line_event = new CustomEvent('receive_line', { detail: complete_lines[i] });
-      div.dispatchEvent(recieve_line_event);
+      const receive_line_event = new CustomEvent('receive_line', { detail: complete_lines[i] });
+      let receive_div = document.querySelector('#receive_data');
+      receive_div.dispatchEvent(receive_line_event);
     }
 
     receive_buffer += lines.slice(-1);
@@ -936,7 +935,7 @@ $(document).ready(function () {
 
       connected_slaves[sa] = {drv: drv, device: device, raw: raw, disabled: disabled};
 
-      new_div = $($(".slave_transient_chart").html()).attr("data-sa", sa);
+      let new_div = $($(".slave_transient_chart").html()).attr("data-sa", sa);
       new_div.children(".btn_config").text("@"+sa+":"+device);
       new_div.children(".slave_enable").prop('checked', disabled ? false : true);
       new_div.children("button.button.cmd").one('click', function () {
@@ -1257,9 +1256,9 @@ async function serial_open_and_start_reading()
           reader.releaseLock();
           break;
         }
-        const recieve_event = new CustomEvent('receive', { detail: value });
+        const receive_event = new CustomEvent('receive', { detail: value });
         let div = document.querySelector('#receive_data');
-        div.dispatchEvent(recieve_event);
+        div.dispatchEvent(receive_event);
       }
     } catch (error) {
       console.log(error);
