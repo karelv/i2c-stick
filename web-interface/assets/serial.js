@@ -124,12 +124,12 @@ class UsbEndpointUnderlyingSource {
                 }
                 if ((_a = result.data) === null || _a === void 0 ? void 0 : _a.buffer) {
                     const chunk = new Uint8Array(result.data.buffer, result.data.byteOffset, result.data.byteLength);
-                    let str = '';
-                    let i;
-                    for (i in chunk){
-                        str+=String.fromCharCode(chunk[i]);
-                    }
-                    elem.innerHTML = elem.innerHTML + "DATA["+my_counter.toString()+"]: result.data.byteOffset: "+result.data.byteOffset.toString()+" | result.data.byteLength: "+result.data.byteLength.toString()+"<br>data: '"+str+"' <hr>";
+//                    let str = '';
+//                    let i;
+//                    for (i in chunk){
+//                        str+=String.fromCharCode(chunk[i]);
+//                    }
+                    elem.innerHTML = elem.innerHTML + "DATA["+my_counter.toString()+"]: result.data.byteOffset: "+result.data.byteOffset.toString()+" | result.data.byteLength: "+result.data.byteLength.toString()+"<hr>";
                     controller.enqueue(chunk);
                 }
             }
