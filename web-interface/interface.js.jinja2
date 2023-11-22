@@ -105,6 +105,10 @@ $(window).resize(function() {
 });
 
 $(document).ready(function () {
+  $(".btn_console_clear").click(function () {
+    $("#console").html("");
+  });
+
 // navigation bar
   $(".navbar-burger").click(function () {
     $(".navbar-burger").toggleClass('is-active');
