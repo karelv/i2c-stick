@@ -126,7 +126,7 @@ class UsbEndpointUnderlyingSource {
                     const chunk = new Uint8Array(result.data.buffer, result.data.byteOffset, result.data.byteLength);
                     let str = '';
                     let i;
-                    for (i in arr){
+                    for (i in chunk){
                         str+=String.fromCharCode(chunk[i]);
                     }
                     elem.innerHTML = elem.innerHTML + "DATA["+my_counter.toString()+"]: result.data.byteOffset: "+result.data.byteOffset.toString()+" | result.data.byteLength: "+result.data.byteLength.toString()+"<br>data: '"+str+"' <hr>";
