@@ -105,6 +105,15 @@ def remove(path):
             raise ValueError("path {} is not a file or dir.".format(p))
 
 
+def find_git_repo(path):
+    """Find repository root from the path's parents"""
+    for path in Path(path).parents:
+        # Check whether "path/.git" exists and is a directory
+        git_dir = path / ".git"
+        if git_dir.is_dir():
+            return path
+
+
 def show_cmd(task):
     msg = task.name
     if task.verbosity >= 2:
@@ -541,14 +550,15 @@ def task_copy_plugins():
     """ Copy the plugin's arduino source files to this arduino directory """
     def do_copy(task):
         # print(task.file_dep)
-        with open("../.git/info/exclude", "r") as ge:
+        exclude_file = os.path.join(find_git_repo(__file__), '.git', 'info', 'exclude')
+        with open(exclude_file, "r") as ge:
             git_exclude = [x.strip() for x in ge.readlines()]
 
         for src in task.file_dep:
             destination = Path(src).name
             if ("i2c-stick-arduino/" + destination) not in git_exclude:
                 git_exclude.append("i2c-stick-arduino/" + destination)
-                with open("../.git/info/exclude", "w") as ge:
+                with open(exclude_file, "w") as ge:
                     ge.write('\n'.join(git_exclude))
 
             must_copy = 0
