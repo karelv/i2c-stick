@@ -16,9 +16,6 @@
  * permissions and limitations under the License.
  */
 'use strict';
-
-var my_counter = 0;
-
 export var SerialPolyfillProtocol;
 (function (SerialPolyfillProtocol) {
     SerialPolyfillProtocol[SerialPolyfillProtocol["UsbCdcAcm"] = 0] = "UsbCdcAcm";
@@ -113,18 +110,12 @@ class UsbEndpointUnderlyingSource {
                 chunkSize = this.endpoint_.packetSize;
             }
             try {
-                let elem = document.querySelector('#console');
-                my_counter = my_counter + 1;
-                elem.innerHTML = elem.innerHTML + "<hr>START["+my_counter.toString()+"]: chunkSize: "+chunkSize.toString()+" -- this.endpoint_.endpointNumber: "+this.endpoint_.endpointNumber.toString()+" <br>";
                 const result = await this.device_.transferIn(this.endpoint_.endpointNumber, chunkSize);
-                elem.innerHTML = elem.innerHTML + "RESULT["+my_counter.toString()+"]: "+result.status+"<hr>";
                 if (result.status != 'ok') {
                     controller.error(`USB error: ${result.status}`);
                     this.onError_();
                 }
                 if ((_a = result.data) === null || _a === void 0 ? void 0 : _a.buffer) {
-                    result.data.byteOffset, 
-                    elem.innerHTML = elem.innerHTML + "DATA["+my_counter.toString()+"]: result.data.byteOffset: "+result.data.byteOffset.toString()+" | result.data.byteLength: "+result.data.byteLength.toString()+" <hr>";
                     const chunk = new Uint8Array(result.data.buffer, result.data.byteOffset, result.data.byteLength);
                     controller.enqueue(chunk);
                 }
