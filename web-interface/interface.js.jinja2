@@ -389,18 +389,10 @@ $(document).ready(function () {
     let term = $("#serial_terminal");
 
     let term_html = term.html();
-    if (term_html.length > 50000)
+    if (term_html.length > 500000)
     {
-      let last_part = term_html.split("<br>").slice(-1);
-      if (last_part === '')
-      {
-        term.empty();
-        term.append("<br>");
-      } else
-      {
-        term.html(last_part);
-      }
-      term_html = term.html();
+      term.empty();
+      term.append("<br>");
     }
     if (term.html().endsWith("<br>"))
     {
@@ -1180,7 +1172,7 @@ async function serial_open_and_start_reading()
   keep_reading = true;
   try
   {
-    await serial.open({ baudRate: 1000000 });
+    await serial.open({ baudRate: 1000000, bufferSize: 10000 });
 
     let dt = get_date_time();
     if (!($("#chk_add_datetime").is(":checked")))
