@@ -56,14 +56,14 @@ for driver in context['drivers']:
 # Arduino compiles all cpp files in the directory; rename to <ori>.disable
 for driver in context['drivers']:
     if driver['disable']:
-        files = list(Path(".").glob(driver['scr_name'] + "_*.cpp")) + list(Path(".").glob(driver['scr_name'] + "_*.h"))
+        files = list(Path(".").glob(driver['src_name'] + "_*.cpp")) + list(Path(".").glob(driver['src_name'] + "_*.h"))
         for file in files:
             shutil.move(file, str(file) + ".disable")
 
 # undo: Arduino compiles all cpp files in the directory; rename to <ori>.disable
 for driver in context['drivers']:
     if driver['disable'] == 0:
-        files = list(Path(".").glob(driver['scr_name'] + "_*.disable"))
+        files = list(Path(".").glob(driver['src_name'] + "_*.disable"))
         for file in files:
             shutil.move(file, str(file).replace(".disable", ""))
 
@@ -629,7 +629,7 @@ def task_add_driver():
         with open(yaml_file, 'w') as output_f:
             output_f.write(yaml.dump({
                 'name': driver,
-                'scr_name': src_name,
+                'src_name': src_name,
                 'function_id': function_id,
             }))
             output_f.write("\n")

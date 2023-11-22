@@ -933,47 +933,50 @@ $(document).ready(function () {
       // "ls:5A:01,00,00,MLX90614"
       // "scan:5A:01,00,00,MLX90614"
       let tmp = line.split(":");
-      let sa = tmp[1];
-      let drv_dev = tmp[2].split(",");
-      let drv = Number(drv_dev[0]);
-      let raw = Number(drv_dev[1]);
-      let disabled = Number(drv_dev[2]);
-      let device = drv_dev[3];
+      if (tmp.length > 2)
+      {
+        let sa = tmp[1];
+        let drv_dev = tmp[2].split(",");
+        let drv = Number(drv_dev[0]);
+        let raw = Number(drv_dev[1]);
+        let disabled = Number(drv_dev[2]);
+        let device = drv_dev[3];
 
-      connected_slaves[sa] = {drv: drv, device: device, raw: raw, disabled: disabled};
+        connected_slaves[sa] = {drv: drv, device: device, raw: raw, disabled: disabled};
 
-      let new_div = $($(".slave_transient_chart").html()).attr("data-sa", sa);
-      new_div.children(".btn_config").text("@"+sa+":"+device);
-      new_div.children(".slave_enable").prop('checked', disabled ? false : true);
-      new_div.children("button.button.cmd").one('click', function () {
-        button_action(this);
-      });
-      new_div.children("input.slave_enable").change(function () {
-        checkbox_slave_enable(this);
-      });
-      new_div.appendTo("#transient_chart_slaves");
+        let new_div = $($(".slave_transient_chart").html()).attr("data-sa", sa);
+        new_div.children(".btn_config").text("@"+sa+":"+device);
+        new_div.children(".slave_enable").prop('checked', disabled ? false : true);
+        new_div.children("button.button.cmd").one('click', function () {
+          button_action(this);
+        });
+        new_div.children("input.slave_enable").change(function () {
+          checkbox_slave_enable(this);
+        });
+        new_div.appendTo("#transient_chart_slaves");
 
-      new_div = $($(".slave_spatial_chart").html()).attr("data-sa", sa);
-      new_div.children(".btn_config").text("@"+sa+":"+device);
-      new_div.children("slave_enable").prop('checked', disabled ? false : true);
-      new_div.children("button.button.cmd").one('click', function () {
-        button_action(this);
-      });
-      new_div.children("input.slave_enable").change(function () {
-        checkbox_slave_enable(this);
-      });
-      new_div.appendTo("#spatial_chart_slaves");
+        new_div = $($(".slave_spatial_chart").html()).attr("data-sa", sa);
+        new_div.children(".btn_config").text("@"+sa+":"+device);
+        new_div.children("slave_enable").prop('checked', disabled ? false : true);
+        new_div.children("button.button.cmd").one('click', function () {
+          button_action(this);
+        });
+        new_div.children("input.slave_enable").change(function () {
+          checkbox_slave_enable(this);
+        });
+        new_div.appendTo("#spatial_chart_slaves");
 
-      new_div = $($(".slave_terminal").html()).attr("data-sa", sa);
-      new_div.children(".btn_config").text("@"+sa+":"+device);
-      new_div.children(".slave_enable").prop('checked', disabled ? false : true);
-      new_div.children("button.button.cmd").one('click', function () {
-        button_action(this);
-      });
-      new_div.children("input.slave_enable").change(function () {
-        checkbox_slave_enable(this);
-      });
-      new_div.appendTo("#terminal_slaves");
+        new_div = $($(".slave_terminal").html()).attr("data-sa", sa);
+        new_div.children(".btn_config").text("@"+sa+":"+device);
+        new_div.children(".slave_enable").prop('checked', disabled ? false : true);
+        new_div.children("button.button.cmd").one('click', function () {
+          button_action(this);
+        });
+        new_div.children("input.slave_enable").change(function () {
+          checkbox_slave_enable(this);
+        });
+        new_div.appendTo("#terminal_slaves");
+      }
     }
 
     if (line.startsWith ("cs:"))
