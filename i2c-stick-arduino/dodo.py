@@ -689,9 +689,13 @@ def task_dist():
         if not Path("../dist").is_dir():
             os.mkdir('../dist')
 
+    def do_copy():
+        shutil.copytree("build", "../dist", dirs_exist_ok=True)
+
+
     return {
         'actions': [(make_dist_dir,),
-                    "cp -rfv build/* ../dist",
+                    (do_copy, )
                     ],
         'verbosity': 2,
         'task_dep': ['arduino-compile', ],
