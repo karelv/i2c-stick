@@ -704,6 +704,44 @@ handle_cmd(uint8_t channel_mask, const char *cmd)
     return NULL;
   }
 
+  this_cmd = "pinval"; // Pin value command
+  if (!strncmp(this_cmd, cmd, strlen(this_cmd)))
+  {
+    int16_t pin_num = -1;
+    if (cmd[strlen(this_cmd)] == ':')
+    {
+      const char *p = cmd+strlen(this_cmd)+1;
+      if (('0' <= *p) && (*p <= '9'))
+      {
+        pin_num = atoi(p);
+      }
+    }
+    if (pin_num >= 0)
+    {
+      const char *p = strchr(cmd+strlen(this_cmd)+1, ':');
+      int16_t pval = -1;
+      if (p)
+      {
+        pval = atoi(p+1);
+      }
+      if ((pval == 0) || (pval == 1))
+      {
+        hal_write_pin(pin_num, pval);
+        send_answer_chunk(channel_mask, this_cmd, 0);
+        send_answer_chunk(channel_mask, ":OK", 1);
+      } else
+      {
+        send_answer_chunk(channel_mask, this_cmd, 0);
+        send_answer_chunk(channel_mask, ":FAIL:Invalid pin value", 1);
+      }
+    } else
+    {
+      send_answer_chunk(channel_mask, this_cmd, 0);
+      send_answer_chunk(channel_mask, ":FAIL:pwm invalid pin_num", 1);
+    }
+    return NULL;
+  }
+
   this_cmd = "nd"; // New Data command
   if (!strncmp(this_cmd, cmd, strlen(this_cmd)))
   {
