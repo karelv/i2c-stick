@@ -11,7 +11,6 @@
 // arduino should not be here, it is only to ease debugging
 // #include <Arduino.h>
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
