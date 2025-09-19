@@ -48,7 +48,7 @@ jobs:
             readme.md
             i2c-stick-${{ github.ref_name }}.zip
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           path: dist/
 
