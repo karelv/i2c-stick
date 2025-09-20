@@ -225,7 +225,6 @@ cmd_90394_joystick_ca(uint8_t channel_mask, const char *input)
   send_answer_chunk(channel_mask, buf, 1);
 }
 
-#include <arduino.h>
 
 void
 cmd_90394_joystick_ca_write(uint8_t channel_mask, const char *input)
