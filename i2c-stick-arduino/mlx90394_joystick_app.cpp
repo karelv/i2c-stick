@@ -261,8 +261,7 @@ cmd_90394_joystick_ca_write(uint8_t channel_mask, const char *input)
   		EEPROM.write(cal_alpha_offset_EE+1, ((cal_alpha_offset & 0xFF00) >> 8) & 0x00FF);
   		EEPROM.write(cal_beta_offset_EE  , cal_beta_offset & 0x00FF);
   		EEPROM.write(cal_beta_offset_EE+1, ((cal_beta_offset & 0xFF00) >> 8) & 0x00FF);
-  		Serial.printf("ERROR: No EEPROM commit....\n");
-//  	  EEPROM.commit();
+      // EEPROM.commit();
 
 			send_answer_chunk(channel_mask, ":CMD:NULL=OK", 1);
     }
