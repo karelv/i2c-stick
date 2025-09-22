@@ -112,10 +112,10 @@ Events in Javascript: https://developer.mozilla.org/en-US/docs/Web/Events/Creati
       <div id="interface_tabs" class="tabs is-fullwidth is-no-margin">
         <ul>
           <li id="tab_int_transient" class="is-active"><a>Transient chart</a></li>
-          <li id="tab_int_spatial"><a>Spatial chart</a></li>
-          <li id="tab_int_thumbstick"><a>2D Thumb stick</a></li>
-          <li id="tab_int_joystick"><a>Joystick</a></li>
-          <!-- <li id="tab_int_apps"><a>Applications</a></li> -->
+          <li id="tab_int_spatial" class="app-tab is-hidden"><a>Thermal Image</a></li>
+          <li id="tab_int_thumbstick" class="app-tab is-hidden"><a>2D Thumb stick</a></li>
+          <li id="tab_int_joystick" class="app-tab is-hidden"><a>Joystick</a></li>
+          <li id="tab_int_apps"><a>Applications</a></li>
           <li id="tab_int_terminal"><a>Terminal</a></li>
         </ul>
       </div>
@@ -245,7 +245,7 @@ Events in Javascript: https://developer.mozilla.org/en-US/docs/Web/Events/Creati
             <fieldset class="sidebar">
               <legend>App control</legend>
               <button data-cmd="scan" title="Scan the I2C bus for slave sensors" class="button cmd is-info btn_scan">Scan I2C</button>
-              <button data-cmd="+app:MLX90394_JOYSTICK" title="Run joystick application" class="button cmd is-info btn_app_run">Run</button> <!-- TODO temporary solution, the app number might change in the future -->
+              <button data-cmd="+app:MLX90394_JOYSTICK" title="Run joystick application" class="button cmd is-info btn_app_run">Run</button>
               <button data-cmd="+app:0" title="Stop joystick application" class="button cmd is-info btn_app_stop">Stop</button>
               <button data-cmd="+ca:MLX90394_JOYSTICK:CMD=NULL" title="Calibrate NULL position" class="button cmd is-info btn_app_null">CAL</button>
             </fieldset>
@@ -260,12 +260,12 @@ Events in Javascript: https://developer.mozilla.org/en-US/docs/Web/Events/Creati
         </div>
       </div>
 
-      <!-- <div id="div_int_apps" class="tab_content content is-no-margin">
+      <div id="div_int_apps" class="tab_content content is-no-margin">
         <div class="card-container">
 
             <div class="card-wrapper">
                 <div class="card">
-                    <div class="card-image">
+                    <div class="card-image open-app" data-app-name="MLX9064X_THERMAL_IMAGE">
                         <figure class="image is-4by3">
                           <img src="assets/apps/thermal_camera/thermal_camera.png"/>
                         </figure>
@@ -274,18 +274,17 @@ Events in Javascript: https://developer.mozilla.org/en-US/docs/Web/Events/Creati
                         <p class="card-header-title">Thermal Image</p>
                     </header>
                     <div class="card-content">
-                        <p>Seeing temperature with MLX90640, MLX90641!</p>
+                        <p>Seeing temperature with MLX90640, MLX90641 or MLX90642!</p>
                     </div>
                     <footer class="card-footer">
-                        <a href="#" class="card-footer-item">Run</a>
-                        <a href="#" class="card-footer-item">Info</a>
+                        <a href="#" class="card-footer-item open-app" data-app-name="MLX9064X_THERMAL_IMAGE">Open</a>
                     </footer>
                 </div>
             </div>
 
             <div class="card-wrapper">
                 <div class="card">
-                    <div class="card-image">
+                    <div class="card-image open-app" data-app-name="MLX90394_THUMBSTICK">
                         <figure class="image is-4by3">
                           <img src="assets/apps/2d_thumbstick/2d_thumbstick_icon.png"/>
                         </figure>
@@ -297,15 +296,14 @@ Events in Javascript: https://developer.mozilla.org/en-US/docs/Web/Events/Creati
                         <p>2D Thumbstick demo with MLX90394</p>
                     </div>
                     <footer class="card-footer">
-                        <a href="#" class="card-footer-item">Run</a>
-                        <a href="#" class="card-footer-item">Info</a>
+                        <a href="#" class="card-footer-item open-app" data-app-name="MLX90394_THUMBSTICK">Open</a>
                     </footer>
                 </div>
             </div>
 
             <div class="card-wrapper">
                 <div class="card">
-                    <div class="card-image">
+                    <div class="card-image open-app" data-app-name="MLX90394_JOYSTICK">
                         <figure class="image is-4by3">
                           <img src="assets/apps/joystick/joystick_icon.png"/>
                         </figure>
@@ -317,13 +315,70 @@ Events in Javascript: https://developer.mozilla.org/en-US/docs/Web/Events/Creati
                         <p>Joystick demo with MLX90394</p>
                     </div>
                     <footer class="card-footer">
-                        <a href="#" class="card-footer-item">Run</a>
-                        <a href="#" class="card-footer-item">Info</a>
+                        <a href="#" class="card-footer-item open-app" data-app-name="MLX90394_JOYSTICK">Open</a>
                     </footer>
                 </div>
             </div>
+
+            <div class="card-wrapper">
+                <div class="card">
+                    <div class="card-image open-app" data-app-name="MLX90642_PEOPLE_DETECTION">
+                        <figure class="image is-4by3">
+                          <img src="assets/apps/2d_thumbstick/2d_thumbstick_icon.png"/>
+                        </figure>
+                    </div>
+                    <header class="card-header">
+                        <p class="card-header-title">People detection</p>
+                    </header>
+                    <div class="card-content">
+                        <p>People detection demo with MLX90642</p>
+                    </div>
+                    <footer class="card-footer">
+                        <a href="#" class="card-footer-item open-app" data-app-name="MLX90642_PEOPLE_DETECTION">Open</a>
+                    </footer>
+                </div>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="card">
+                    <div class="card-image open-app" data-app-name="MLX90617_INUCTION_COOKTOP">
+                        <figure class="image is-4by3">
+                          <img src="assets/apps/2d_thumbstick/2d_thumbstick_icon.png"/>
+                        </figure>
+                    </div>
+                    <header class="card-header">
+                        <p class="card-header-title">Look-through-glass</p>
+                    </header>
+                    <div class="card-content">
+                        <p>Look-through-glass induction cooktop demo with MLX90617 and MLX90614.</p>
+                    </div>
+                    <footer class="card-footer">
+                        <a href="#" class="card-footer-item open-app" data-app-name="MLX90617_INUCTION_COOKTOP">Open</a>
+                    </footer>
+                </div>
+            </div>
+
+            <div class="card-wrapper">
+                <div class="card">
+                    <div class="card-image open-app" data-app-name="MLX90617_INUCTION_COOKTOP">
+                        <figure class="image is-4by3">
+                          <img src="assets/apps/2d_thumbstick/2d_thumbstick_icon.png"/>
+                        </figure>
+                    </div>
+                    <header class="card-header">
+                        <p class="card-header-title">Look-through-glass</p>
+                    </header>
+                    <div class="card-content">
+                        <p>Look-through-glass induction cooktop demo with MLX90617 and MLX90614.</p>
+                    </div>
+                    <footer class="card-footer">
+                        <a href="#" class="card-footer-item open-app" data-app-name="MLX90617_INUCTION_COOKTOP">Open</a>
+                    </footer>
+                </div>
+            </div>
+
         </div>
-      </div> -->
+      </div>
 
       <div id="div_int_spatial" class="tab_content content is-no-margin">
         <div class="columns">

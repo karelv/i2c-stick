@@ -99,8 +99,26 @@ $(window).resize(function() {
 });
 
 $(document).ready(function () {
-  $(".btn_console_clear").click(function () {
+  $(".btn_console_clear").click(function () {   
     $("#console").html("");
+  });
+
+  $(".open-app").click(function () {
+    console.log("open app", this.dataset.appName);
+    $(".app-tab").addClass("is-hidden");
+    if (this.dataset.appName == "MLX9064X_THERMAL_IMAGE")
+    {
+      $("#tab_int_spatial").removeClass("is-hidden").trigger('click');
+    }
+    if (this.dataset.appName == "MLX90394_THUMBSTICK")
+    {
+      $("#tab_int_thumbstick").removeClass("is-hidden").trigger('click');
+    }
+    if (this.dataset.appName == "MLX90394_JOYSTICK")
+    {
+      $("#tab_int_joystick").removeClass("is-hidden").trigger('click');
+    }
+    
   });
 
 // navigation bar

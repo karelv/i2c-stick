@@ -49,8 +49,10 @@ $modal-background-background-color: bulmaRgba($scheme-invert, 0.75);
 @import "../node_modules/bulma/sass/components/navbar.sass";
 @import "../node_modules/bulma/sass/components/tabs.sass";
 @import "../node_modules/bulma/sass/components/modal.sass";
+@import "../node_modules/bulma/sass/components/card.sass";
 @import "../node_modules/bulma/sass/layout/hero.sass";
 @import "../node_modules/bulma/sass/layout/section.sass";
+@import "../node_modules/bulma/sass/helpers/visibility.sass";
 
 
 @font-face {
@@ -224,4 +226,42 @@ pre{
   font-size: 10px;
   display: inline;
   background-color: transparent;
+}
+
+div#div_int_apps > .card-container {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 20px;
+		padding: 20px;
+		align-items: stretch; /* Key: Stretch cards to equal height */
+}
+
+div#div_int_apps * .card-wrapper {
+		max-width: 400px;
+		flex: 1 0 300px;
+		display: flex; /* Enables flexbox on the card wrapper */
+		flex-direction: column; /* Arranges card content vertically */
+}
+
+div#div_int_apps * .card {
+		flex-grow: 1; /* Allows the card to expand to fill available height */
+		display: flex;
+		flex-direction: column;
+}
+
+div#div_int_apps * .card-content {
+		flex-grow: 1; /* Allows card content to expand and push footer to bottom */
+}
+
+@media (max-width: 768px) {
+		div#div_int_apps * .card-wrapper {
+				flex: 1 0 90%;
+				max-width: 90%;
+		}
+}
+
+div.card-image > figure {
+    margin-left: 0em;
+    margin-right: 0em;
 }
