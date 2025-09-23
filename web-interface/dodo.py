@@ -378,7 +378,7 @@ def task_generate():
             'actions': [(do_generate, [jinja2_file.name, output_file.name])],
             'file_dep': [jinja2_file.name],
             'clean': True,
-            'task_dep': ['pip:requirements.txt'],
+            'task_dep': ['pip:requirements.txt', 'convert-md:app_modal*.html',],
             'targets': [output_file.name],
             'title': show_cmd,
         }
