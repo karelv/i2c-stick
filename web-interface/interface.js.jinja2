@@ -98,27 +98,65 @@ $(window).resize(function() {
   set_spatial_chart_height();
 });
 
+{% set apps = ['mlx9064x_thermal_image', 'mlx90394_thumbstick', 'mlx90394_joystick', 'mlx90642_people_detection', 'mlx90617_induction_cooktop'] %}
+{% for app in apps %}
+
+const app_modal_{{ app }} = String.raw`
+{% set html_app_modal = "app_modal_" + app + ".html" %}
+{% include html_app_modal without context %}
+`;
+
+{% endfor %}
+
 $(document).ready(function () {
   $(".btn_console_clear").click(function () {   
     $("#console").html("");
   });
 
+  $("#app-modal .delete, #app-modal .modal-background").click(function() {
+    $(this).removeClass("is-active");
+  });
+  $("#app-modal .btn-open-application").click(function() {
+    $(this).removeClass("is-active");
+  });
+
+
+
   $(".open-app").click(function () {
     console.log("open app", this.dataset.appName);
     $(".app-tab").addClass("is-hidden");
+
+
     if (this.dataset.appName == "MLX9064X_THERMAL_IMAGE")
     {
+      $("#app-modal .modal-content").html(app_modal_mlx9064x_thermal_image);
+      $("#app-modal").addClass("is-active");
       $("#tab_int_spatial").removeClass("is-hidden").trigger('click');
     }
     if (this.dataset.appName == "MLX90394_THUMBSTICK")
     {
+      $("#app-modal .modal-content").html(app_modal_mlx90394_thumbstick);
+      $("#app-modal").addClass("is-active");
       $("#tab_int_thumbstick").removeClass("is-hidden").trigger('click');
     }
     if (this.dataset.appName == "MLX90394_JOYSTICK")
     {
+      $("#app-modal .modal-content").html(app_modal_mlx90394_joystick);
+      $("#app-modal").addClass("is-active");
       $("#tab_int_joystick").removeClass("is-hidden").trigger('click');
     }
-    
+    if (this.dataset.appName == "MLX90642_PEOPLE_DETECTION")
+    {
+      $("#app-modal .modal-content").html(app_modal_mlx90642_people_detection);
+      $("#app-modal").addClass("is-active");
+      //$("#tab_int_people_detection").removeClass("is-hidden").trigger('click');
+    }
+    if (this.dataset.appName == "MLX90617_INDUCTION_COOKTOP")
+    {
+      $("#app-modal .modal-content").html(app_modal_mlx90617_induction_cooktop);
+      $("#app-modal").addClass("is-active");
+      //$("#tab_int_induction_cooktop").removeClass("is-hidden").trigger('click');
+    }
   });
 
 // navigation bar
