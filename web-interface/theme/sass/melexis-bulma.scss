@@ -228,38 +228,25 @@ pre{
   background-color: transparent;
 }
 
-div#div_int_apps > .card-container {
+/* Ensure all .card-content in a flex row have equal height */
+.columns.is-flex, .columns.is-multiline.is-flex {
 		display: flex;
 		flex-wrap: wrap;
-		justify-content: center;
-		gap: 20px;
-		padding: 20px;
-		align-items: stretch; /* Key: Stretch cards to equal height */
 }
-
-div#div_int_apps * .card-wrapper {
-		max-width: 400px;
-		flex: 1 0 300px;
-		display: flex; /* Enables flexbox on the card wrapper */
-		flex-direction: column; /* Arranges card content vertically */
+.columns.is-flex .card,
+.columns.is-multiline.is-flex .card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
-
-div#div_int_apps * .card {
-		flex-grow: 1; /* Allows the card to expand to fill available height */
+.columns.is-flex .card-content,
+.columns.is-multiline.is-flex .card-content {
+  flex-grow: 1;
 		display: flex;
 		flex-direction: column;
+  justify-content: flex-start;
 }
-
-div#div_int_apps * .card-content {
-		flex-grow: 1; /* Allows card content to expand and push footer to bottom */
-}
-
-@media (max-width: 768px) {
-		div#div_int_apps * .card-wrapper {
-				flex: 1 0 90%;
-				max-width: 90%;
-		}
-}
+/* End-of: Ensure all .card-content in a flex row have equal height */
 
 div.card-image > figure {
     margin-left: 0em;
